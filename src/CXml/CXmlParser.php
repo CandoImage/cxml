@@ -30,7 +30,7 @@ class CXmlParser
     {
         // Load XML
         $xml = new \SimpleXMLElement($xmlContent);
-        $cXml = new ($this->getCxmlClassName)();
+        $cXml = new $this->cXmlClassName();
 
         // Header
         $header = new Header();
