@@ -5,7 +5,7 @@ namespace CXml;
 use CXml\Models\Requests\PunchOutSetupRequest;
 use CXml\Models\Requests\RequestInterface;
 
-class RequestFactory
+class RequestFactory implements RequestFactoryInterface
 {
     public function create(string $name) : RequestInterface
     {

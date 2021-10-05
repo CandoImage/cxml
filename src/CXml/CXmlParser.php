@@ -4,14 +4,33 @@ namespace CXml;
 
 use CXml\Models\CXml;
 use CXml\Models\Header;
+use CXml\Models\Requests\RequestInterface;
 
 class CXmlParser
 {
+
+    protected $cXmlClassName;
+    protected RequestFactoryInterface $requestFactory;
+
+    public function __construct(RequestFactoryInterface $requestFactory)
+    {
+        $this->requestFactory = $requestFactory;
+        $this->cXmlClassName = CXml::class;
+    }
+
+    public function setCxmlClassName(string $cXmlClassName) {
+        $this->cXmlClassName = $cXmlClassName;
+    }
+
+    public function getCxmlClassName() {
+        return $this->cXmlClassName;
+    }
+
     public function parse(string $xmlContent) : CXml
     {
         // Load XML
         $xml = new \SimpleXMLElement($xmlContent);
-        $cXml = new CXml();
+        $cXml = new ($this->getCxmlClassName)();
 
         // Header
         $header = new Header();
@@ -19,9 +38,8 @@ class CXmlParser
         $cXml->setHeader($header);
 
         // Requests
-        $factory = new RequestFactory();
         foreach ($xml->xpath('Request/*') as $requestNode) {
-            $request = $factory->create($requestNode->getName());
+            $request = $this->requestFactory->create($requestNode->getName());
             $request->parse($requestNode);
             $cXml->addRequest($request);
         }
