@@ -26,6 +26,9 @@ class CXml
     /** @var \DateTime */
     private $timestamp;
 
+    /** @var string */
+    private $locale;
+
     public function __construct()
     {
         $this->timestamp = new \DateTime();
@@ -161,6 +164,25 @@ XML;
     public function setTimestamp(\DateTime $timestamp): self
     {
         $this->timestamp = $timestamp;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLocale(): string
+    {
+        return $this->locale;
+    }
+
+    /**
+     * @param string $locale
+     *
+     * @return CXml
+     */
+    public function setLocale(string $locale): self
+    {
+        $this->locale = $locale;
         return $this;
     }
 }

@@ -30,7 +30,20 @@ class CXmlParser
     {
         // Load XML
         $xml = new \SimpleXMLElement($xmlContent);
+        /** @var CXml $cXml */
         $cXml = new $this->cXmlClassName();
+
+        // Locale
+        $xmlAttributes = $xml->attributes('xml', true);
+        if (isset($xmlAttributes['lang'])) {
+            $cXml->setLocale($xmlAttributes['lang']);
+        }
+        if ($payloadID = $xml->attributes()->payloadID) {
+            $cXml->setPayloadId((string) $payloadID);
+        }
+        if ($timestamp = $xml->attributes()->timestamp) {
+            $cXml->setTimestamp(new \DateTime((string) $timestamp));
+        }
 
         // Header
         $header = new Header();
