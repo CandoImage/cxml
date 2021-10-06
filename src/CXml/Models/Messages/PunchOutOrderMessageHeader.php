@@ -85,10 +85,14 @@ class PunchOutOrderMessageHeader
         $this->addPriceNode($node, 'Total', $currency, $this->totalAmount);
 
         // Shipping
-        $this->addPriceNode($node, 'Shipping', $currency, $this->shippingCost, $this->shippingDescription, $locale);
+        if (!is_null($this->shippingCost)) {
+            $this->addPriceNode($node, 'Shipping', $currency, $this->shippingCost, $this->shippingDescription, $locale);
+        }
 
         // Tax
-        $this->addPriceNode($node, 'Tax', $currency, $this->taxSum, $this->taxDescription, $locale);
+        if (!is_null($this->taxSum)) {
+            $this->addPriceNode($node, 'Tax', $currency, $this->taxSum, $this->taxDescription, $locale);
+        }
     }
 
     private function formatPrice(float $totalAmount)
