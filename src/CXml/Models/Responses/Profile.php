@@ -261,45 +261,46 @@ class Profile implements ResponseInterface
             $transactionNode->addAttribute('requestName', 'PunchOutSetupRequest');
             $transactionNode
                 ->addChild('URL', $this->punchOutSetupRequestUrl);
-        }
 
-        /**
-         * Direct Puncout Options
-         */
-        if (!is_null($this->optionDirectURL)) {
-            $transactionNode
-                ->addChild('Direct.URL', $this->optionDirectURL);
-        }
-        if (!is_null($this->optionDirectAuthenticationMethodCredentialMac)) {
-            $transactionNode
-                ->addChild('Direct.AuthenticationMethod.CredentialMac', $this->optionDirectAuthenticationMethodCredentialMac);
-        }
-        if (!is_null($this->optionDirectAuthenticationMethodCertificate)) {
-            $transactionNode
-                ->addChild('Direct.AuthenticationMethod.Certificate', $this->optionDirectAuthenticationMethodCertificate);
+            /**
+             * Direct Puncout Options
+             */
+            if (!is_null($this->optionDirectURL)) {
+                $transactionNode
+                    ->addChild('Direct.URL', $this->optionDirectURL);
+            }
+            if (!is_null($this->optionDirectAuthenticationMethodCredentialMac)) {
+                $transactionNode
+                    ->addChild('Direct.AuthenticationMethod.CredentialMac', $this->optionDirectAuthenticationMethodCredentialMac);
+            }
+            if (!is_null($this->optionDirectAuthenticationMethodCertificate)) {
+                $transactionNode
+                    ->addChild('Direct.AuthenticationMethod.Certificate', $this->optionDirectAuthenticationMethodCertificate);
+            }
+
         }
 
         /**
          * MAC options
          */
         if (!is_null($this->optionCredentialMacType)) {
-            $transactionNode
+            $node
                 ->addChild('CredentialMac.type', $this->optionCredentialMacType);
         }
         if (!is_null($this->optionCredentialMacAlgorithm)) {
-            $transactionNode
+            $node
                 ->addChild('CredentialMac.algorithm', $this->optionCredentialMacAlgorithm);
         }
         if (!is_null($this->optionCredentialMacCreationDate)) {
-            $transactionNode
+            $node
                 ->addChild('CredentialMac.creationDate', $this->optionCredentialMacCreationDate);
         }
         if (!is_null($this->optionCredentialMacExpirationDate)) {
-            $transactionNode
+            $node
                 ->addChild('CredentialMac.expirationDate', $this->optionCredentialMacExpirationDate);
         }
         if (!is_null($this->optionCredentialMacValue)) {
-            $transactionNode
+            $node
                 ->addChild('CredentialMac.value', $this->optionCredentialMacValue);
         }
     }
