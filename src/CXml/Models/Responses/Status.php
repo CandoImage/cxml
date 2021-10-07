@@ -10,10 +10,14 @@ class Status implements ResponseInterface
     /** @var string */
     private $statusText;
 
-    public function __construct(int $statusCode = 200, string $statusString = 'OK')
+    /** @var string */
+    private $statusValue;
+
+    public function __construct(int $statusCode = 200, string $statusString = 'OK', $value = "")
     {
         $this->statusCode = $statusCode;
         $this->statusText = $statusString;
+        $this->statusValue = $value;
     }
 
     public function getStatusCode(): int
@@ -38,10 +42,29 @@ class Status implements ResponseInterface
         return $this;
     }
 
+    /**
+     * @return string
+     */
+    public function getStatusValue()
+    {
+        return $this->statusValue;
+    }
+
+    /**
+     * @param string $statusValue
+     *
+     * @return Status
+     */
+    public function setStatusValue($statusValue): self
+    {
+        $this->statusValue = $statusValue;
+        return $this;
+    }
+
     /** @noinspection PhpUndefinedFieldInspection */
     public function render(\SimpleXMLElement $parentNode): void
     {
-        $node = $parentNode->addChild('Status');
+        $node = $parentNode->addChild('Status', $this->statusValue);
 
         $node->addAttribute('code', $this->statusCode);
         $node->addAttribute('text', $this->statusText);
