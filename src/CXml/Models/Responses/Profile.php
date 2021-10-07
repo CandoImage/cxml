@@ -257,7 +257,7 @@ class Profile implements ResponseInterface
         $node->addAttribute('lastRefresh', date(DATE_ISO8601, $this->lastRefresh));
 
         if ($this->punchOutSetupRequestUrl) {
-            $transactionNode = $parentNode->addChild('Transaction');
+            $transactionNode = $node->addChild('Transaction');
             $transactionNode->addAttribute('requestName', 'PunchOutSetupRequest');
             $transactionNode
                 ->addChild('URL', $this->punchOutSetupRequestUrl);
