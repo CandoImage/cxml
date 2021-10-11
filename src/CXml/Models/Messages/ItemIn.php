@@ -10,6 +10,9 @@ class ItemIn
     /** @var string Product SKU */
     private $supplierPartId;
 
+    /** @var string Id to enable order / cart restore */
+    private $supplierPartAuxiliaryID;
+
     /** @var float */
     private $unitPrice;
 
@@ -53,6 +56,24 @@ class ItemIn
     public function setSupplierPartId(string $supplierPartId): self
     {
         $this->supplierPartId = $supplierPartId;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSupplierPartAuxiliaryID(): string
+    {
+        return $this->supplierPartAuxiliaryID;
+    }
+
+    /**
+     * @param string $supplierPartAuxiliaryID
+     *
+     * @return ItemIn
+     */
+    public function setSupplierPartAuxiliaryID(string $supplierPartAuxiliaryID): self {
+        $this->supplierPartAuxiliaryID = $supplierPartAuxiliaryID;
         return $this;
     }
 
@@ -141,6 +162,10 @@ class ItemIn
         // ItemID
         $itemIdNode = $node->addChild('ItemID');
         $itemIdNode->addChild('SupplierPartID', $this->supplierPartId);
+
+        if ($this->supplierPartAuxiliaryID) {
+            $itemIdNode->addChild('SupplierPartAuxiliaryID', $this->supplierPartAuxiliaryID);
+        }
 
         // ItemDetails
         $itemDetailsNode = $node->addChild('ItemDetail');
