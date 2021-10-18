@@ -4,37 +4,64 @@ namespace CXml\Models\Messages;
 
 class ItemIn implements MessageInterface
 {
-    /** @var int */
+    /**
+     * @var int 
+     */
     private $quantity;
 
-    /** @var string Product SKU */
+    /**
+     * @var string Product SKU 
+     */
     private $supplierPartId;
 
-    /** @var string Id to enable order / cart restore */
+    /**
+     * @var string Id to enable order / cart restore 
+     */
     private $supplierPartAuxiliaryID;
 
-    /** @var float */
+    /**
+     * @var \CXml\Models\Messages\Money 
+     */
     private $unitPrice;
 
-    /** @var string Product name */
+    /**
+     * @var string Product name 
+     */
     private $description;
 
-    /** @var string */
+    /**
+     * @var string Locale of description 
+     */
+    private $descriptionLocale;
+
+    /**
+     * @var string 
+     */
     private $unitOfMeasure;
 
-    /** @var string */
+    /**
+     * @var string 
+     */
     private $classificationDomain;
 
-    /** @var string */
+    /**
+     * @var string 
+     */
     private $classification;
 
-    /** @var string */
+    /**
+     * @var string 
+     */
     private $manufacturerPartId;
 
-    /** @var string */
+    /**
+     * @var string 
+     */
     private $manufacturerName;
 
-    /** @var int|null */
+    /**
+     * @var int|null 
+     */
     private $leadTime;
 
     public function getQuantity(): int
@@ -72,17 +99,18 @@ class ItemIn implements MessageInterface
      *
      * @return ItemIn
      */
-    public function setSupplierPartAuxiliaryID(string $supplierPartAuxiliaryID): self {
+    public function setSupplierPartAuxiliaryID(string $supplierPartAuxiliaryID): self
+    {
         $this->supplierPartAuxiliaryID = $supplierPartAuxiliaryID;
         return $this;
     }
 
-    public function getUnitPrice(): float
+    public function getUnitPrice(): Money
     {
         return $this->unitPrice;
     }
 
-    public function setUnitPrice(float $unitPrice): self
+    public function setUnitPrice(Money $unitPrice): self
     {
         $this->unitPrice = $unitPrice;
         return $this;
@@ -154,7 +182,7 @@ class ItemIn implements MessageInterface
         return $this;
     }
 
-    public function render(\SimpleXMLElement $parentNode, string $currency, string $locale): void
+    public function render(\SimpleXMLElement $parentNode): void
     {
         $node = $parentNode->addChild('ItemIn');
         $node->addAttribute('quantity', $this->quantity);
@@ -175,8 +203,10 @@ class ItemIn implements MessageInterface
             ->addAttribute('currency', $currency);
 
         // Description
-        $itemDetailsNode->addChild('Description', $this->description)
-            ->addAttribute('xml:xml:lang', $locale);
+        $description = $itemDetailsNode->addChild('Description', $this->description);
+        if ($locale) {
+            $description->addAttribute('xml:xml:lang', $locale);
+        }
 
         // UnitOfMeasure
         $itemDetailsNode->addChild('UnitOfMeasure', $this->unitOfMeasure);
@@ -193,11 +223,6 @@ class ItemIn implements MessageInterface
         if ($this->leadTime !== null) {
             $itemDetailsNode->addChild('LeadTime', $this->leadTime);
         }
-    }
-
-    private function formatPrice(float $price)
-    {
-        return number_format($price, 2, '.', '');
     }
 
     public function getLeadTime(): ?int

@@ -9,25 +9,39 @@ use CXml\Models\Responses\ResponseInterface;
 
 class CXml
 {
-    /** @var Header */
+    /**
+     * @var Header 
+     */
     private $header;
 
-    /** @var RequestInterface[] */
+    /**
+     * @var RequestInterface[] 
+     */
     private $requests = [];
 
-    /** @var MessageInterface[] */
+    /**
+     * @var MessageInterface[] 
+     */
     private $messages = [];
 
-    /** @var ResponseInterface[]; */
+    /**
+     * @var ResponseInterface[]; 
+     */
     private $responses = [];
 
-    /** @var string */
+    /**
+     * @var string 
+     */
     private $payloadId;
 
-    /** @var \DateTime */
+    /**
+     * @var \DateTime 
+     */
     private $timestamp;
 
-    /** @var string */
+    /**
+     * @var string 
+     */
     private $locale;
 
     public function __construct()
@@ -96,7 +110,9 @@ class CXml
         $this->responses[] = $response;
     }
 
-    /** @noinspection PhpUndefinedFieldInspection */
+    /**
+     * @noinspection PhpUndefinedFieldInspection 
+     */
     public function render() : string
     {
         $xmlData = <<<XML
@@ -186,4 +202,5 @@ XML;
         $this->locale = $locale;
         return $this;
     }
+
 }

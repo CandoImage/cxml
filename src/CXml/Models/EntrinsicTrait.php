@@ -4,10 +4,14 @@ namespace CXml\Models;
 
 trait EntrinsicTrait
 {
-    /** @var string[] */
+    /**
+     * @var string[] 
+     */
     private $extrinsic = [];
 
-    /** @noinspection PhpUndefinedFieldInspection */
+    /**
+     * @noinspection PhpUndefinedFieldInspection 
+     */
     public function parseEntrinsic(\SimpleXMLElement $requestNode): void
     {
         foreach ($requestNode->xpath('Extrinsic') as $extrinsic) {
@@ -22,7 +26,8 @@ trait EntrinsicTrait
      *
      * @return string|null
      */
-    public function getExtrinsic($name) {
+    public function getExtrinsic($name)
+    {
         if (isset($this->extrinsic[$name])) {
             return $this->extrinsic[$name];
         }

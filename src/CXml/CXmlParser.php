@@ -18,11 +18,13 @@ class CXmlParser
         $this->cXmlClassName = CXml::class;
     }
 
-    public function setCxmlClassName(string $cXmlClassName) {
+    public function setCxmlClassName(string $cXmlClassName)
+    {
         $this->cXmlClassName = $cXmlClassName;
     }
 
-    public function getCxmlClassName() {
+    public function getCxmlClassName()
+    {
         return $this->cXmlClassName;
     }
 

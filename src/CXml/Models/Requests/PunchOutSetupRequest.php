@@ -9,19 +9,29 @@ class PunchOutSetupRequest implements RequestInterface
 {
     use EntrinsicTrait;
 
-    /** @var string|null */
+    /**
+     * @var string|null 
+     */
     private $operation;
 
-    /** @var string|null */
+    /**
+     * @var string|null 
+     */
     private $buyerCookie;
 
-    /** @var string|null */
+    /**
+     * @var string|null 
+     */
     private $browserFormPostUrl;
 
-    /** @var \CXml\Models\Messages\Contact[] */
+    /**
+     * @var \CXml\Models\Messages\Contact[] 
+     */
     private $contact = [];
 
-    /** @noinspection PhpUndefinedFieldInspection */
+    /**
+     * @noinspection PhpUndefinedFieldInspection 
+     */
     public function parse(\SimpleXMLElement $requestNode): void
     {
         $this->operation = (string)$requestNode->attributes()->operation;

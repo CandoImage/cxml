@@ -8,7 +8,9 @@ class ProfileRequest implements RequestInterface
 {
     use EntrinsicTrait;
 
-    /** @noinspection PhpUndefinedFieldInspection */
+    /**
+     * @noinspection PhpUndefinedFieldInspection 
+     */
     public function parse(\SimpleXMLElement $requestNode): void
     {
         $this->parseEntrinsic($requestNode);

@@ -4,19 +4,29 @@ namespace CXml\Models\Messages;
 
 class PunchOutOrderMessage implements MessageInterface
 {
-    /** @var string */
+    /**
+     * @var string 
+     */
     private $buyerCookie;
 
-    /** @var PunchOutOrderMessageHeader */
+    /**
+     * @var PunchOutOrderMessageHeader 
+     */
     private $header;
 
-    /** @var ItemIn[] */
+    /**
+     * @var ItemIn[] 
+     */
     private $items = [];
 
-    /** @var string */
+    /**
+     * @var string 
+     */
     private $currency = 'USD';
 
-    /** @var string string */
+    /**
+     * @var string string 
+     */
     private $locale = 'en-US';
 
     public function getBuyerCookie(): string

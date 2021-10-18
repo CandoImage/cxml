@@ -4,7 +4,9 @@ namespace CXml\Models\Responses;
 
 class PunchOutSetupResponse implements ResponseInterface
 {
-    /** @var string */
+    /**
+     * @var string 
+     */
     private $startPageUrl;
 
     public function getStartPageUrl(): string

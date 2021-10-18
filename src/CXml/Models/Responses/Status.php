@@ -4,13 +4,19 @@ namespace CXml\Models\Responses;
 
 class Status implements ResponseInterface
 {
-    /** @var int */
+    /**
+     * @var int 
+     */
     private $statusCode;
 
-    /** @var string */
+    /**
+     * @var string 
+     */
     private $statusText;
 
-    /** @var string */
+    /**
+     * @var string 
+     */
     private $statusValue;
 
     public function __construct(int $statusCode = 200, string $statusString = 'OK', $value = "")
@@ -61,7 +67,9 @@ class Status implements ResponseInterface
         return $this;
     }
 
-    /** @noinspection PhpUndefinedFieldInspection */
+    /**
+     * @noinspection PhpUndefinedFieldInspection 
+     */
     public function render(\SimpleXMLElement $parentNode): void
     {
         $node = $parentNode->addChild('Status', $this->statusValue);

@@ -6,19 +6,29 @@ namespace CXml\Models\Messages;
 
 class PunchOutOrderMessageHeader
 {
-    /** @var float */
+    /**
+     * @var float 
+     */
     private $totalAmount;
 
-    /** @var float|null */
+    /**
+     * @var float|null 
+     */
     private $shippingCost;
 
-    /** @var string */
+    /**
+     * @var string 
+     */
     private $shippingDescription;
 
-    /** @var float */
+    /**
+     * @var float 
+     */
     private $taxSum;
 
-    /** @var string */
+    /**
+     * @var string 
+     */
     private $taxDescription;
 
     public function getTotalAmount(): float
@@ -95,18 +105,14 @@ class PunchOutOrderMessageHeader
         }
     }
 
-    private function formatPrice(float $totalAmount)
-    {
-        return number_format($totalAmount, 2, '.', '');
-    }
-
     private function addPriceNode(\SimpleXMLElement $parentNode, string $name, string $currency, float $priceValue, string $description = null, string $locale = null)
     {
         $node = $parentNode->addChild($name);
 
-        $node
-            ->addChild('Money', $this->formatPrice($priceValue))
-            ->addAttribute('currency', $currency);
+        $money = new Money();
+        $money->setAmount($priceValue);
+        $money->setCurrency($currency);
+        $money->render($node);
 
         if ($description !== null) {
             $node->addChild('Description', $description)

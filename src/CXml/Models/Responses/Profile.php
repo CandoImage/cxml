@@ -2,8 +2,6 @@
 
 namespace CXml\Models\Responses;
 
-use phpDocumentor\Reflection\Types\Boolean;
-
 class Profile implements ResponseInterface
 {
 

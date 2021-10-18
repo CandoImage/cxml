@@ -2,6 +2,7 @@
 
 namespace CXml\Models\Messages;
 
+use CXml\Models\AttributesParserTrait;
 use CXml\Models\Requests\RequestInterface;
 
 class ItemOut implements RequestInterface
@@ -52,14 +53,19 @@ class ItemOut implements RequestInterface
     protected $stoFinalDelivery;
 
     // Elements
-    /** @var \CXml\Models\Messages\ShipTo */
+    /**
+     * @var \CXml\Models\Messages\ShipTo 
+     */
     protected $shipTo;
     protected $shipping;
     protected $tax;
-    /** @var \CXml\Models\Messages\Contact */
+    /**
+     * @var \CXml\Models\Messages\Contact 
+     */
     protected $contact;
 
-    public function parse(\SimpleXMLElement $requestNode) {
+    public function parse(\SimpleXMLElement $requestNode)
+    {
         $attributes = [
             'quantity',
             'lineNumber',

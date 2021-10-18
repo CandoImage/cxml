@@ -24,44 +24,60 @@ class OrderRequest implements RequestInterface
      * - blanket
      * - stockTransport
      * - stockTransportRelease
+     *
      * @var
      */
     protected $orderType = 'regular';
 
     /**
      * Type of request: new, update, delete
+     *
      * @var string
      */
     protected $type;
 
-    /** @var float|null */
+    /**
+     * @var float|null 
+     */
     protected $total;
 
-    /** @var string|null */
+    /**
+     * @var string|null 
+     */
     protected $shipTo;
 
-    /** @var BillTo */
+    /**
+     * @var BillTo 
+     */
     protected $billTo;
 
     protected $shipping;
     protected $tax;
 
-    /** @var \CXml\Models\Messages\Contact */
+    /**
+     * @var \CXml\Models\Messages\Contact 
+     */
     protected $contact;
 
-    /** @var \CXml\Models\Messages\ItemOut[] */
+    /**
+     * @var \CXml\Models\Messages\ItemOut[] 
+     */
     protected $itemOut = [];
 
-    /** @noinspection PhpUndefinedFieldInspection */
+    /**
+     * @noinspection PhpUndefinedFieldInspection 
+     */
     public function parse(\SimpleXMLElement $requestNode): void
     {
 
-        $this->parseAttributes($requestNode, [
+        $this->parseAttributes(
+            $requestNode, [
             'orderID',
             'orderDate',
             'orderType',
             'type',
-        ]);
+            ]
+        );
 
         $this->parseEntrinsic($requestNode);
 

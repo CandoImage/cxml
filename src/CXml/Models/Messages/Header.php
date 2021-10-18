@@ -3,7 +3,6 @@
 namespace CXml\Models\Messages;
 
 use CXml\Models\Requests\RequestInterface;
-use CXml\Models\Responses\ResponseInterface;
 
 class Header implements RequestInterface, MessageInterface
 {

@@ -3,7 +3,6 @@
 namespace CXml\Models\Messages;
 
 use CXml\Models\Requests\RequestInterface;
-use CXml\Models\Responses\ResponseInterface;
 
 class PostalAddress implements RequestInterface, MessageInterface
 {
@@ -14,14 +13,18 @@ class PostalAddress implements RequestInterface, MessageInterface
 
     private $country;
     private $city;
-    /** @var string[]  */
+    /**
+     * @var string[]  
+     */
     private $street = [];
 
     /**
      * Optional Properties
      */
 
-    /** @var string[]  */
+    /**
+     * @var string[]  
+     */
     private $deliverTo = [];
     private $municipality;
     private $state;

@@ -17,14 +17,17 @@ class ShipTo implements RequestInterface
      * Optional Properties
      */
 
-    /** @var \CXml\Models\Messages\PostalAddress */
+    /**
+     * @var \CXml\Models\Messages\PostalAddress 
+     */
     private $address;
 
     protected $isoCountryCode;
     protected $addressId;
     protected $addressIdDomain;
 
-    public function parse(\SimpleXMLElement $billToXml) {
+    public function parse(\SimpleXMLElement $billToXml) : void
+    {
 
         if ($data = (string) $billToXml->attributes()->isoCountryCode) {
             $this->isoCountryCode = $data;

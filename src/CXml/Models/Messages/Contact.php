@@ -17,7 +17,9 @@ class Contact implements RequestInterface
      * Optional Properties
      */
 
-    /** @var \CXml\Models\Messages\PostalAddress[] */
+    /**
+     * @var \CXml\Models\Messages\PostalAddress[] 
+     */
     private $postalAddress = [];
     private $email;
     private $phone;
