@@ -5,27 +5,27 @@ namespace CXml\Models\Messages;
 class PunchOutOrderMessage implements MessageInterface
 {
     /**
-     * @var string 
+     * @var string
      */
     private $buyerCookie;
 
     /**
-     * @var PunchOutOrderMessageHeader 
+     * @var PunchOutOrderMessageHeader
      */
     private $header;
 
     /**
-     * @var ItemIn[] 
+     * @var ItemIn[]
      */
     private $items = [];
 
     /**
-     * @var string 
+     * @var string
      */
     private $currency = 'USD';
 
     /**
-     * @var string string 
+     * @var string string
      */
     private $locale = 'en-US';
 
@@ -100,7 +100,13 @@ class PunchOutOrderMessage implements MessageInterface
         }
 
         foreach ($this->items as $item) {
-            $item->render($node, $this->currency, $this->locale);
+            if (!$item->getUnitPriceCurrency()) {
+                $item->setUnitPriceCurrency($this->currency);
+            }
+            if (!$item->getLocale()) {
+                $item->setLocale($this->locale);
+            }
+            $item->render($node);
         }
     }
 }

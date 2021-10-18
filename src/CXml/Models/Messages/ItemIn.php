@@ -5,62 +5,67 @@ namespace CXml\Models\Messages;
 class ItemIn implements MessageInterface
 {
     /**
-     * @var int 
+     * @var int
      */
     private $quantity;
 
     /**
-     * @var string Product SKU 
+     * @var string Product SKU
      */
     private $supplierPartId;
 
     /**
-     * @var string Id to enable order / cart restore 
+     * @var string Id to enable order / cart restore
      */
     private $supplierPartAuxiliaryID;
 
     /**
-     * @var \CXml\Models\Messages\Money 
+     * @var float
      */
     private $unitPrice;
 
     /**
-     * @var string Product name 
+     * @var string
+     */
+    private $unitPriceCurrency;
+
+    /**
+     * @var string Product name
      */
     private $description;
 
     /**
-     * @var string Locale of description 
+     * @var string Locale of description
      */
-    private $descriptionLocale;
+    private $locale;
 
     /**
-     * @var string 
+     * @var string
      */
     private $unitOfMeasure;
 
     /**
-     * @var string 
+     * @var string
      */
     private $classificationDomain;
 
     /**
-     * @var string 
+     * @var string
      */
     private $classification;
 
     /**
-     * @var string 
+     * @var string
      */
     private $manufacturerPartId;
 
     /**
-     * @var string 
+     * @var string
      */
     private $manufacturerName;
 
     /**
-     * @var int|null 
+     * @var int|null
      */
     private $leadTime;
 
@@ -105,14 +110,25 @@ class ItemIn implements MessageInterface
         return $this;
     }
 
-    public function getUnitPrice(): Money
+    public function getUnitPrice(): float
     {
         return $this->unitPrice;
     }
 
-    public function setUnitPrice(Money $unitPrice): self
+    public function setUnitPrice(float $unitPrice): self
     {
         $this->unitPrice = $unitPrice;
+        return $this;
+    }
+
+    public function getUnitPriceCurrency(): float
+    {
+        return $this->unitPriceCurrency;
+    }
+
+    public function setUnitPriceCurrency(string $unitPriceCurrency): self
+    {
+        $this->unitPriceCurrency = $unitPriceCurrency;
         return $this;
     }
 
@@ -199,8 +215,10 @@ class ItemIn implements MessageInterface
         $itemDetailsNode = $node->addChild('ItemDetail');
 
         // UnitPrice
-        $itemDetailsNode->addChild('UnitPrice')->addChild('Money', $this->formatPrice($this->unitPrice))
-            ->addAttribute('currency', $currency);
+        $unitPrice = new Money();
+        $unitPrice->setAmount($this->unitPrice);
+        $unitPrice->setCurrency($this->unitPriceCurrency);
+        $unitPrice->render($itemDetailsNode->addChild('UnitPrice'));
 
         // Description
         $description = $itemDetailsNode->addChild('Description', $this->description);
@@ -233,6 +251,17 @@ class ItemIn implements MessageInterface
     public function setLeadTime(?int $leadTime): self
     {
         $this->leadTime = $leadTime;
+        return $this;
+    }
+
+    public function getLocale(): string
+    {
+        return $this->locale;
+    }
+
+    public function setLocale(string $locale): self
+    {
+        $this->locale = $locale;
         return $this;
     }
 }
