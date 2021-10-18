@@ -121,7 +121,7 @@ class ItemIn implements MessageInterface
         return $this;
     }
 
-    public function getUnitPriceCurrency(): float
+    public function getUnitPriceCurrency(): ?string
     {
         return $this->unitPriceCurrency;
     }
@@ -254,7 +254,7 @@ class ItemIn implements MessageInterface
         return $this;
     }
 
-    public function getLocale(): string
+    public function getLocale(): ?string
     {
         return $this->locale;
     }
