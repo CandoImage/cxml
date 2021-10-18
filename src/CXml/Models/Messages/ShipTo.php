@@ -1,6 +1,6 @@
 <?php
 
-namespace CXml\Models;
+namespace CXml\Models\Messages;
 
 use CXml\Models\Requests\RequestInterface;
 
@@ -18,7 +18,7 @@ class ShipTo implements RequestInterface
      */
 
     /**
-     * @var \CXml\Models\Messages\PostalAddress 
+     * @var \CXml\Models\Messages\PostalAddress
      */
     private $address;
 
@@ -39,9 +39,9 @@ class ShipTo implements RequestInterface
             $this->addressIdDomain = $data;
         }
 
-        $this->name = $billToXml->xpath('/Name')[0];
+        $this->name = $billToXml->xpath('Name')[0];
 
-        if ($postalAddressElement = current($billToXml->xpath('/PostalAddress'))) {
+        if ($postalAddressElement = current($billToXml->xpath('PostalAddress'))) {
             $this->address = new PostalAddress();
             $this->address->parse($postalAddressElement);
         }

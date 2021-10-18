@@ -17,7 +17,7 @@ class BillTo implements RequestInterface
      */
 
     /**
-     * @var \CXml\Models\Messages\PostalAddress 
+     * @var \CXml\Models\Messages\PostalAddress
      */
     private $postalAddress;
 
@@ -38,9 +38,9 @@ class BillTo implements RequestInterface
             $this->addressIdDomain = $data;
         }
 
-        $this->name = $billToXml->xpath('/Name')[0];
+        $this->name = $billToXml->xpath('Name')[0];
 
-        if ($postalAddressElement = current($billToXml->xpath('/PostalAddress'))) {
+        if ($postalAddressElement = current($billToXml->xpath('PostalAddress'))) {
             $this->postalAddress = new PostalAddress();
             $this->postalAddress->parse($postalAddressElement);
         }

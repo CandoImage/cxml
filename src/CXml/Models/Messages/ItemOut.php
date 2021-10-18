@@ -54,17 +54,17 @@ class ItemOut implements RequestInterface
 
     // Elements
     /**
-     * @var \CXml\Models\Messages\ShipTo 
+     * @var \CXml\Models\Messages\ShipTo
      */
     protected $shipTo;
     protected $shipping;
     protected $tax;
     /**
-     * @var \CXml\Models\Messages\Contact 
+     * @var \CXml\Models\Messages\Contact
      */
     protected $contact;
 
-    public function parse(\SimpleXMLElement $requestNode)
+    public function parse(\SimpleXMLElement $requestNode): void
     {
         $attributes = [
             'quantity',
@@ -95,26 +95,26 @@ class ItemOut implements RequestInterface
         ];
         $this->parseAttributes($requestNode, $attributes);
 
-        if ($node = current($requestNode->xpath('/ShipTo'))) {
+        if ($node = current($requestNode->xpath('ShipTo'))) {
             $this->shipTo = new ShipTo();
             $this->shipTo->parse($node);
         }
 
-        if ($node = current($requestNode->xpath('/Contact'))) {
+        if ($node = current($requestNode->xpath('Contact'))) {
             $this->contact = new Contact();
             $this->contact->parse($node);
         }
 
-        if ($node = current($requestNode->xpath('/ItemID/SupplierPartID'))) {
+        if ($node = current($requestNode->xpath('ItemID/SupplierPartID'))) {
             $this->itemIdSupplierPartID = (string) $node;
         }
-        if ($node = current($requestNode->xpath('/ItemID/SupplierPartAuxiliaryID'))) {
+        if ($node = current($requestNode->xpath('ItemID/SupplierPartAuxiliaryID'))) {
             $this->itemIdSupplierPartAuxiliaryID = (string) $node;
         }
-        if ($node = current($requestNode->xpath('/ItemID/BuyerPartID'))) {
+        if ($node = current($requestNode->xpath('ItemID/BuyerPartID'))) {
             $this->itemIdBuyerPartID = (string) $node;
         }
-        if ($node = current($requestNode->xpath('/ItemID/IdReference'))) {
+        if ($node = current($requestNode->xpath('ItemID/IdReference'))) {
             $this->itemIdIdReference = (string) $node;
         }
     }
