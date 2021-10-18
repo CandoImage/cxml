@@ -2,6 +2,7 @@
 
 namespace CXml\Models;
 
+use CXml\Models\Messages\Header;
 use CXml\Models\Messages\MessageInterface;
 use CXml\Models\Requests\RequestInterface;
 use CXml\Models\Responses\ResponseInterface;

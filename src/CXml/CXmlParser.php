@@ -3,7 +3,7 @@
 namespace CXml;
 
 use CXml\Models\CXml;
-use CXml\Models\Header;
+use CXml\Models\Messages\Header;
 use CXml\Models\Requests\RequestInterface;
 
 class CXmlParser
