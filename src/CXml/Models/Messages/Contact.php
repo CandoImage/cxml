@@ -1,10 +1,10 @@
 <?php
 
-namespace CXml\Models;
+namespace CXml\Models\Messages;
 
-use CXml\Models\Responses\ResponseInterfaxe;
+use CXml\Models\Requests\RequestInterface;
 
-class Contact
+class Contact implements RequestInterface
 {
 
     /**
@@ -17,7 +17,7 @@ class Contact
      * Optional Properties
      */
 
-    /** @var \CXml\Models\PostalAddress[] */
+    /** @var \CXml\Models\Messages\PostalAddress[] */
     private $postalAddress = [];
     private $email;
     private $phone;

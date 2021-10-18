@@ -1,10 +1,11 @@
 <?php
 
-namespace CXml\Models;
+namespace CXml\Models\Messages;
 
+use CXml\Models\Requests\RequestInterface;
 use CXml\Models\Responses\ResponseInterface;
 
-class Header
+class Header implements RequestInterface, MessageInterface
 {
     private $senderIdentity;
     private $senderSharedSecret;

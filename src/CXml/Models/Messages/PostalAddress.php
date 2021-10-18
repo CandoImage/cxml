@@ -1,10 +1,11 @@
 <?php
 
-namespace CXml\Models;
+namespace CXml\Models\Messages;
 
-use CXml\Models\Responses\ResponseInterfaxe;
+use CXml\Models\Requests\RequestInterface;
+use CXml\Models\Responses\ResponseInterface;
 
-class PostalAddress
+class PostalAddress implements RequestInterface, MessageInterface
 {
 
     /**
@@ -186,6 +187,35 @@ class PostalAddress
         }
         if ($data = $contactXml->xpath('PostalCode')) {
             $this->postalCode = (string) current($data);
+        }
+    }
+
+    public function render(\SimpleXMLElement $parentNode) : void
+    {
+        if ($this->country) {
+            $parentNode->addChild('Country', $this->country);
+        }
+        if ($this->city) {
+            $parentNode->addChild('City', $this->city);
+        }
+        if ($this->street) {
+            foreach ($this->street as $street) {
+                $parentNode->addChild('Street', $street);
+            }
+        }
+        if ($this->deliverTo) {
+            foreach ($this->deliverTo as $deliverTo) {
+                $parentNode->addChild('DeliverTo', $deliverTo);
+            }
+        }
+        if ($this->municipality) {
+            $parentNode->addChild('Municipality', $this->municipality);
+        }
+        if ($this->state) {
+            $parentNode->addChild('State', $this->state);
+        }
+        if ($this->postalCode) {
+            $parentNode->addChild('PostalCode', $this->postalCode);
         }
     }
 }

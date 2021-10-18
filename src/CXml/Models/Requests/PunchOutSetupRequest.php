@@ -2,7 +2,7 @@
 
 namespace CXml\Models\Requests;
 
-use CXml\Models\Contact;
+use CXml\Models\Messages\Contact;
 use CXml\Models\EntrinsicTrait;
 
 class PunchOutSetupRequest implements RequestInterface
@@ -18,7 +18,7 @@ class PunchOutSetupRequest implements RequestInterface
     /** @var string|null */
     private $browserFormPostUrl;
 
-    /** @var \CXml\Models\Contact[] */
+    /** @var \CXml\Models\Messages\Contact[] */
     private $contact = [];
 
     /** @noinspection PhpUndefinedFieldInspection */
@@ -71,7 +71,7 @@ class PunchOutSetupRequest implements RequestInterface
     }
 
     /**
-     * @return \CXml\Models\Contact[]
+     * @return \CXml\Models\Messages\Contact[]
      */
     public function getContact(): array
     {
@@ -79,7 +79,7 @@ class PunchOutSetupRequest implements RequestInterface
     }
 
     /**
-     * @param \CXml\Models\Contact[] $contact
+     * @param \CXml\Models\Messages\Contact[] $contact
      *
      * @return PunchOutSetupRequest
      */

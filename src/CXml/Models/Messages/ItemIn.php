@@ -2,7 +2,7 @@
 
 namespace CXml\Models\Messages;
 
-class ItemIn
+class ItemIn implements MessageInterface
 {
     /** @var int */
     private $quantity;

@@ -2,6 +2,8 @@
 
 namespace CXml\Models\Responses;
 
+use phpDocumentor\Reflection\Types\Boolean;
+
 class Profile implements ResponseInterface
 {
 
@@ -35,6 +37,17 @@ class Profile implements ResponseInterface
     protected $optionCredentialMacCreationDate;
     protected $optionCredentialMacExpirationDate;
     protected $optionCredentialMacValue;
+
+    /**
+     * @var string
+     */
+    protected $orderRequestUrl;
+
+    /**
+     * Order Request Options
+     */
+    protected bool $optionOrderRequestAttachments = false;
+    protected bool $optionOrderRequestChanges = false;
 
     public function __construct()
     {
@@ -250,34 +263,113 @@ class Profile implements ResponseInterface
         return $this;
     }
 
+    /**
+     * @return string
+     */
+    public function getOrderRequestUrl(): string
+    {
+        return $this->orderRequestUrl;
+    }
+
+    /**
+     * @param string $orderRequestUrl
+     *
+     * @return Profile
+     */
+    public function setOrderRequestUrl(string $orderRequestUrl): Profile
+    {
+        $this->orderRequestUrl = $orderRequestUrl;
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isOptionOrderRequestAttachments(): bool
+    {
+        return $this->optionOrderRequestAttachments;
+    }
+
+    /**
+     * @param bool $optionOrderRequestAttachments
+     *
+     * @return Profile
+     */
+    public function setOptionOrderRequestAttachments(
+        bool $optionOrderRequestAttachments
+    ): self {
+        $this->optionOrderRequestAttachments = $optionOrderRequestAttachments;
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isOptionOrderRequestChanges(): bool
+    {
+        return $this->optionOrderRequestChanges;
+    }
+
+    /**
+     * @param bool $optionOrderRequestChanges
+     *
+     * @return Profile
+     */
+    public function setOptionOrderRequestChanges(bool $optionOrderRequestChanges
+    ): self {
+        $this->optionOrderRequestChanges = $optionOrderRequestChanges;
+        return $this;
+    }
+
     public function render(\SimpleXMLElement $parentNode): void
     {
         $node = $parentNode->addChild('ProfileResponse');
         $node->addAttribute('effectiveDate', date(DATE_ISO8601, $this->effectiveDate));
         $node->addAttribute('lastRefresh', date(DATE_ISO8601, $this->lastRefresh));
 
+        /**
+         * Punchout Setup
+         */
         if ($this->punchOutSetupRequestUrl) {
-            $transactionNode = $node->addChild('Transaction');
-            $transactionNode->addAttribute('requestName', 'PunchOutSetupRequest');
-            $transactionNode
+            $punchoutSetupTrans = $node->addChild('Transaction');
+            $punchoutSetupTrans->addAttribute('requestName', 'PunchOutSetupRequest');
+            $punchoutSetupTrans
                 ->addChild('URL', $this->punchOutSetupRequestUrl);
 
             /**
-             * Direct Puncout Options
+             * Direct Punchout Options
              */
             if (!is_null($this->optionDirectURL)) {
-                $transactionNode
-                    ->addChild('Direct.URL', $this->optionDirectURL);
+                $punchoutSetupTrans
+                    ->addChild('Option', $this->optionDirectURL)
+                    ->addAttribute('name', 'Direct.URL');
             }
             if (!is_null($this->optionDirectAuthenticationMethodCredentialMac)) {
-                $transactionNode
-                    ->addChild('Direct.AuthenticationMethod.CredentialMac', $this->optionDirectAuthenticationMethodCredentialMac);
+                $punchoutSetupTrans
+                    ->addChild('Option', $this->optionDirectAuthenticationMethodCredentialMac)
+                    ->addAttribute('name', 'Direct.AuthenticationMethod.CredentialMac');
             }
             if (!is_null($this->optionDirectAuthenticationMethodCertificate)) {
-                $transactionNode
-                    ->addChild('Direct.AuthenticationMethod.Certificate', $this->optionDirectAuthenticationMethodCertificate);
+                $punchoutSetupTrans
+                    ->addChild('Option', $this->optionDirectAuthenticationMethodCertificate)
+                    ->addAttribute('name', 'Direct.AuthenticationMethod.Certificate');
             }
 
+        }
+
+        /**
+         *  Order Request.
+         */
+        if ($this->orderRequestUrl) {
+            $orderRequestTrans = $node->addChild('Transaction');
+            $orderRequestTrans->addAttribute('requestName', 'OrderRequest');
+            $orderRequestTrans
+                ->addChild('URL', $this->orderRequestUrl);
+
+            $orderRequestTrans->addChild('Option', (empty($this->optionOrderRequestAttachments)) ? 'No' : 'Yes')
+                ->addAttribute('name', 'attachments');
+            $orderRequestTrans->addChild('Option', (empty($this->optionOrderRequestChanges)) ? 'No' : 'Yes')
+                ->addAttribute('name', 'changes');
         }
 
         /**
@@ -285,23 +377,28 @@ class Profile implements ResponseInterface
          */
         if (!is_null($this->optionCredentialMacType)) {
             $node
-                ->addChild('CredentialMac.type', $this->optionCredentialMacType);
+                ->addChild('Option', $this->optionCredentialMacType)
+                ->addAttribute('name', 'CredentialMac.type');
         }
         if (!is_null($this->optionCredentialMacAlgorithm)) {
             $node
-                ->addChild('CredentialMac.algorithm', $this->optionCredentialMacAlgorithm);
+                ->addChild('Option', $this->optionCredentialMacAlgorithm)
+                ->addAttribute('name', 'CredentialMac.algorithm');
         }
         if (!is_null($this->optionCredentialMacCreationDate)) {
             $node
-                ->addChild('CredentialMac.creationDate', $this->optionCredentialMacCreationDate);
+                ->addChild('Option', $this->optionCredentialMacCreationDate)
+                ->addAttribute('name', 'CredentialMac.creationDate');
         }
         if (!is_null($this->optionCredentialMacExpirationDate)) {
             $node
-                ->addChild('CredentialMac.expirationDate', $this->optionCredentialMacExpirationDate);
+                ->addChild('Option', $this->optionCredentialMacExpirationDate)
+                ->addAttribute('name', 'CredentialMac.expirationDate');
         }
         if (!is_null($this->optionCredentialMacValue)) {
             $node
-                ->addChild('CredentialMac.value', $this->optionCredentialMacValue);
+                ->addChild('Option', $this->optionCredentialMacValue)
+                ->addAttribute('name', 'CredentialMac.value');
         }
     }
 }

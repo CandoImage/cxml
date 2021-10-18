@@ -2,6 +2,7 @@
 
 namespace CXml;
 
+use CXml\Models\Requests\OrderRequest;
 use CXml\Models\Requests\ProfileRequest;
 use CXml\Models\Requests\PunchOutSetupRequest;
 use CXml\Models\Requests\RequestInterface;
@@ -15,6 +16,8 @@ class RequestFactory implements RequestFactoryInterface
                 return new PunchOutSetupRequest();
             case 'ProfileRequest':
                 return new ProfileRequest();
+            case 'OrderRequest':
+                return new OrderRequest();
         }
 
         throw new \Exception("Request type '$name' is not supported");
