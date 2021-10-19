@@ -10,37 +10,37 @@ use CXml\Models\Responses\ResponseInterface;
 class CXml
 {
     /**
-     * @var Header 
+     * @var Header
      */
     private $header;
 
     /**
-     * @var RequestInterface[] 
+     * @var RequestInterface[]
      */
     private $requests = [];
 
     /**
-     * @var MessageInterface[] 
+     * @var MessageInterface[]
      */
     private $messages = [];
 
     /**
-     * @var ResponseInterface[]; 
+     * @var ResponseInterface[];
      */
     private $responses = [];
 
     /**
-     * @var string 
+     * @var string
      */
     private $payloadId;
 
     /**
-     * @var \DateTime 
+     * @var \DateTime
      */
     private $timestamp;
 
     /**
-     * @var string 
+     * @var string
      */
     private $locale;
 
@@ -111,7 +111,7 @@ class CXml
     }
 
     /**
-     * @noinspection PhpUndefinedFieldInspection 
+     * @noinspection PhpUndefinedFieldInspection
      */
     public function render() : string
     {
@@ -173,7 +173,7 @@ XML;
         return $this;
     }
 
-    public function getTimestamp(): \DateTime
+    public function getTimestamp(): ?\DateTime
     {
         return $this->timestamp;
     }
@@ -187,9 +187,9 @@ XML;
     /**
      * @return string
      */
-    public function getLocale(): string
+    public function getLocale(): ?string
     {
-        return $this->locale;
+        return (string) $this->locale;
     }
 
     /**
