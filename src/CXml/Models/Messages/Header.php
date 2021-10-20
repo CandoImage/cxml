@@ -155,6 +155,9 @@ class Header implements RequestInterface, MessageInterface
         // The receiver should reject the document if there are multiple
         // credentials in a To, From, or Sender section that use different
         // values but use the same domain.
+        // @TODO Figure out how this is in the specification while the SAP
+        // catalog tester (https://service.ariba.com/CatalogTester.aw) happily
+        // sends payload that violates this....
         if ($fromCredentials = $headerXml->xpath('From/Credential')) {
             $this->fromIdentity = (string)$fromCredentials[0]->xpath('Identity')[0];
             $this->fromDomain = (string)$fromCredentials[0]->attributes()->domain;
@@ -162,9 +165,9 @@ class Header implements RequestInterface, MessageInterface
             foreach ($fromCredentials as $fromCredential) {
                 $credential = new Credential();
                 $credential->parse($fromCredential);
-                if (isset($this->fromCredentials[$credential->getDomain()])) {
-                    throw new \Exception('Duplicated "From" credential. Only one credential per domain is valid. See 3.1.7.5  Credential http://xml.cxml.org/current/cXMLGettingStarted.pdf');
-                }
+//                if (isset($this->fromCredentials[$credential->getDomain()])) {
+//                    throw new \Exception('Duplicated "From" credential. Only one credential per domain is valid. See 3.1.7.5  Credential http://xml.cxml.org/current/cXMLGettingStarted.pdf');
+//                }
                 $this->fromCredentials[$credential->getDomain()] = $credential;
             }
         }
@@ -173,9 +176,9 @@ class Header implements RequestInterface, MessageInterface
             foreach ($toCredentials as $toCredential) {
                 $credential = new Credential();
                 $credential->parse($toCredential);
-                if (isset($this->toCredentials[$credential->getDomain()])) {
-                    throw new \Exception('Duplicated "To" credential. Only one credential per domain is valid. See 3.1.7.5  Credential http://xml.cxml.org/current/cXMLGettingStarted.pdf');
-                }
+//                if (isset($this->toCredentials[$credential->getDomain()])) {
+//                    throw new \Exception('Duplicated "To" credential. Only one credential per domain is valid. See 3.1.7.5  Credential http://xml.cxml.org/current/cXMLGettingStarted.pdf');
+//                }
                 $this->toCredentials[$credential->getDomain()] = $credential;
             }
         }
@@ -184,9 +187,9 @@ class Header implements RequestInterface, MessageInterface
             foreach ($senderCredentials as $senderCredential) {
                 $credential = new Credential();
                 $credential->parse($senderCredential);
-                if (isset($this->senderCredentials[$credential->getDomain()])) {
-                    throw new \Exception('Duplicated "Sender" credential. Only one credential per domain is valid. See 3.1.7.5  Credential http://xml.cxml.org/current/cXMLGettingStarted.pdf');
-                }
+//                if (isset($this->senderCredentials[$credential->getDomain()])) {
+//                    throw new \Exception('Duplicated "Sender" credential. Only one credential per domain is valid. See 3.1.7.5  Credential http://xml.cxml.org/current/cXMLGettingStarted.pdf');
+//                }
                 $this->senderCredentials[$credential->getDomain()] = $credential;
             }
         }
