@@ -142,7 +142,7 @@ class Header implements RequestInterface, MessageInterface
         return $this;
     }
 
-    public function parse(\SimpleXMLElement $headerXml) : void
+    public function parse(\SimpleXMLElement $headerXml, $validate = false) : void
     {
         $this->senderIdentity = (string)$headerXml->xpath('Sender/Credential/Identity')[0];
         $this->senderSharedSecret = (string)$headerXml->xpath('Sender/Credential/SharedSecret')[0];
@@ -162,35 +162,38 @@ class Header implements RequestInterface, MessageInterface
             $this->fromIdentity = (string)$fromCredentials[0]->xpath('Identity')[0];
             $this->fromDomain = (string)$fromCredentials[0]->attributes()->domain;
 
+            $domainValidation = [];
             foreach ($fromCredentials as $fromCredential) {
                 $credential = new Credential();
                 $credential->parse($fromCredential);
-//                if (isset($this->fromCredentials[$credential->getDomain()])) {
-//                    throw new \Exception('Duplicated "From" credential. Only one credential per domain is valid. See 3.1.7.5  Credential http://xml.cxml.org/current/cXMLGettingStarted.pdf');
-//                }
-                $this->fromCredentials[$credential->getDomain()] = $credential;
+                if ($validate && isset($this->fromCredentials[$credential->getDomain()])) {
+                    throw new \Exception('Duplicated "From" credential. Only one credential per domain is valid. See 3.1.7.5  Credential http://xml.cxml.org/current/cXMLGettingStarted.pdf');
+                }
+                $this->fromCredentials[] = $domainValidation[$credential->getDomain()] = $credential;
             }
         }
 
         if ($toCredentials = $headerXml->xpath('To/Credential')) {
+            $domainValidation = [];
             foreach ($toCredentials as $toCredential) {
                 $credential = new Credential();
                 $credential->parse($toCredential);
-//                if (isset($this->toCredentials[$credential->getDomain()])) {
-//                    throw new \Exception('Duplicated "To" credential. Only one credential per domain is valid. See 3.1.7.5  Credential http://xml.cxml.org/current/cXMLGettingStarted.pdf');
-//                }
-                $this->toCredentials[$credential->getDomain()] = $credential;
+                if ($validate && isset($this->toCredentials[$credential->getDomain()])) {
+                    throw new \Exception('Duplicated "To" credential. Only one credential per domain is valid. See 3.1.7.5  Credential http://xml.cxml.org/current/cXMLGettingStarted.pdf');
+                }
+                $this->toCredentials[] = $domainValidation[$credential->getDomain()] = $credential;
             }
         }
 
         if ($senderCredentials = $headerXml->xpath('Sender/Credential')) {
+            $domainValidation = [];
             foreach ($senderCredentials as $senderCredential) {
                 $credential = new Credential();
                 $credential->parse($senderCredential);
-//                if (isset($this->senderCredentials[$credential->getDomain()])) {
-//                    throw new \Exception('Duplicated "Sender" credential. Only one credential per domain is valid. See 3.1.7.5  Credential http://xml.cxml.org/current/cXMLGettingStarted.pdf');
-//                }
-                $this->senderCredentials[$credential->getDomain()] = $credential;
+                if ($validate && isset($domainValidation[$credential->getDomain()])) {
+                    throw new \Exception('Duplicated "Sender" credential. Only one credential per domain is valid. See 3.1.7.5  Credential http://xml.cxml.org/current/cXMLGettingStarted.pdf');
+                }
+                $this->senderCredentials[] = $domainValidation[$credential->getDomain()] = $credential;
             }
         }
     }
