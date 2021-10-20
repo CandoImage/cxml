@@ -202,6 +202,7 @@ class ItemIn implements MessageInterface
     {
         $node = $parentNode->addChild('ItemIn');
         $node->addAttribute('quantity', $this->quantity);
+        $locale = $this->getLocale();
 
         // ItemID
         $itemIdNode = $node->addChild('ItemID');
