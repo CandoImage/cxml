@@ -332,24 +332,24 @@ class Profile implements ResponseInterface
             $punchoutSetupTrans = $node->addChild('Transaction');
             $punchoutSetupTrans->addAttribute('requestName', 'PunchOutSetupRequest');
             $punchoutSetupTrans
-                ->addChild('URL', $this->punchOutSetupRequestUrl);
+                ->addChild('URL', htmlspecialchars($this->punchOutSetupRequestUrl, ENT_XML1 | ENT_COMPAT, 'UTF-8'));
 
             /**
              * Direct Punchout Options
              */
             if (!is_null($this->optionDirectURL)) {
                 $punchoutSetupTrans
-                    ->addChild('Option', $this->optionDirectURL)
+                    ->addChild('Option', htmlspecialchars($this->optionDirectURL, ENT_XML1 | ENT_COMPAT, 'UTF-8'))
                     ->addAttribute('name', 'Direct.URL');
             }
             if (!is_null($this->optionDirectAuthenticationMethodCredentialMac)) {
                 $punchoutSetupTrans
-                    ->addChild('Option', $this->optionDirectAuthenticationMethodCredentialMac)
+                    ->addChild('Option', htmlspecialchars($this->optionDirectAuthenticationMethodCredentialMac, ENT_XML1 | ENT_COMPAT, 'UTF-8'))
                     ->addAttribute('name', 'Direct.AuthenticationMethod.CredentialMac');
             }
             if (!is_null($this->optionDirectAuthenticationMethodCertificate)) {
                 $punchoutSetupTrans
-                    ->addChild('Option', $this->optionDirectAuthenticationMethodCertificate)
+                    ->addChild('Option', htmlspecialchars($this->optionDirectAuthenticationMethodCertificate, ENT_XML1 | ENT_COMPAT, 'UTF-8'))
                     ->addAttribute('name', 'Direct.AuthenticationMethod.Certificate');
             }
 
@@ -362,7 +362,7 @@ class Profile implements ResponseInterface
             $orderRequestTrans = $node->addChild('Transaction');
             $orderRequestTrans->addAttribute('requestName', 'OrderRequest');
             $orderRequestTrans
-                ->addChild('URL', $this->orderRequestUrl);
+                ->addChild('URL', htmlspecialchars($this->orderRequestUrl, ENT_XML1 | ENT_COMPAT, 'UTF-8'));
 
             $orderRequestTrans->addChild('Option', (empty($this->optionOrderRequestAttachments)) ? 'No' : 'Yes')
                 ->addAttribute('name', 'attachments');
@@ -375,27 +375,27 @@ class Profile implements ResponseInterface
          */
         if (!is_null($this->optionCredentialMacType)) {
             $node
-                ->addChild('Option', $this->optionCredentialMacType)
+                ->addChild('Option', htmlspecialchars($this->optionCredentialMacType, ENT_XML1 | ENT_COMPAT, 'UTF-8'))
                 ->addAttribute('name', 'CredentialMac.type');
         }
         if (!is_null($this->optionCredentialMacAlgorithm)) {
             $node
-                ->addChild('Option', $this->optionCredentialMacAlgorithm)
+                ->addChild('Option', htmlspecialchars($this->optionCredentialMacAlgorithm, ENT_XML1 | ENT_COMPAT, 'UTF-8'))
                 ->addAttribute('name', 'CredentialMac.algorithm');
         }
         if (!is_null($this->optionCredentialMacCreationDate)) {
             $node
-                ->addChild('Option', $this->optionCredentialMacCreationDate)
+                ->addChild('Option', htmlspecialchars($this->optionCredentialMacCreationDate, ENT_XML1 | ENT_COMPAT, 'UTF-8'))
                 ->addAttribute('name', 'CredentialMac.creationDate');
         }
         if (!is_null($this->optionCredentialMacExpirationDate)) {
             $node
-                ->addChild('Option', $this->optionCredentialMacExpirationDate)
+                ->addChild('Option', htmlspecialchars($this->optionCredentialMacExpirationDate, ENT_XML1 | ENT_COMPAT, 'UTF-8'))
                 ->addAttribute('name', 'CredentialMac.expirationDate');
         }
         if (!is_null($this->optionCredentialMacValue)) {
             $node
-                ->addChild('Option', $this->optionCredentialMacValue)
+                ->addChild('Option', htmlspecialchars($this->optionCredentialMacValue, ENT_XML1 | ENT_COMPAT, 'UTF-8'))
                 ->addAttribute('name', 'CredentialMac.value');
         }
     }

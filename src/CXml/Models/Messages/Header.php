@@ -209,7 +209,7 @@ class Header implements RequestInterface, MessageInterface
             }
         }
         else {
-            $this->addNode($headerNode, 'From', $this->fromIdentity ?? 'Unknown');
+            $this->addNode($headerNode, 'From', htmlspecialchars($this->fromIdentity ?? 'Unknown', ENT_XML1 | ENT_COMPAT, 'UTF-8'));
         }
 
         if ($this->toCredentials) {
@@ -241,7 +241,7 @@ class Header implements RequestInterface, MessageInterface
         $credentialNode = $node->addChild('Credential');
         $credentialNode->addAttribute('domain', '');
 
-        $credentialNode->addChild('Identity', $identity);
+        $credentialNode->addChild('Identity', htmlspecialchars($identity, ENT_XML1 | ENT_COMPAT, 'UTF-8'));
 
         return $node;
     }

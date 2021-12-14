@@ -5,7 +5,7 @@ namespace CXml\Models\Responses;
 class PunchOutSetupResponse implements ResponseInterface
 {
     /**
-     * @var string 
+     * @var string
      */
     private $startPageUrl;
 
@@ -25,6 +25,6 @@ class PunchOutSetupResponse implements ResponseInterface
         $node = $parentNode->addChild('PunchOutSetupResponse');
         $node
             ->addChild('StartPage')
-            ->addChild('URL', $this->startPageUrl);
+            ->addChild('URL', htmlspecialchars($this->startPageUrl, ENT_XML1 | ENT_COMPAT, 'UTF-8'));
     }
 }

@@ -14,7 +14,7 @@ class PostalAddress implements RequestInterface, MessageInterface
     private $country;
     private $city;
     /**
-     * @var string[]  
+     * @var string[]
      */
     private $street = [];
 
@@ -23,7 +23,7 @@ class PostalAddress implements RequestInterface, MessageInterface
      */
 
     /**
-     * @var string[]  
+     * @var string[]
      */
     private $deliverTo = [];
     private $municipality;
@@ -196,29 +196,29 @@ class PostalAddress implements RequestInterface, MessageInterface
     public function render(\SimpleXMLElement $parentNode) : void
     {
         if ($this->country) {
-            $parentNode->addChild('Country', $this->country);
+            $parentNode->addChild('Country', htmlspecialchars($this->country, ENT_XML1 | ENT_COMPAT, 'UTF-8'));
         }
         if ($this->city) {
-            $parentNode->addChild('City', $this->city);
+            $parentNode->addChild('City', htmlspecialchars($this->city, ENT_XML1 | ENT_COMPAT, 'UTF-8'));
         }
         if ($this->street) {
             foreach ($this->street as $street) {
-                $parentNode->addChild('Street', $street);
+                $parentNode->addChild('Street', htmlspecialchars($street, ENT_XML1 | ENT_COMPAT, 'UTF-8'));
             }
         }
         if ($this->deliverTo) {
             foreach ($this->deliverTo as $deliverTo) {
-                $parentNode->addChild('DeliverTo', $deliverTo);
+                $parentNode->addChild('DeliverTo', htmlspecialchars($deliverTo, ENT_XML1 | ENT_COMPAT, 'UTF-8'));
             }
         }
         if ($this->municipality) {
-            $parentNode->addChild('Municipality', $this->municipality);
+            $parentNode->addChild('Municipality', htmlspecialchars($this->municipality, ENT_XML1 | ENT_COMPAT, 'UTF-8'));
         }
         if ($this->state) {
-            $parentNode->addChild('State', $this->state);
+            $parentNode->addChild('State', htmlspecialchars($this->state, ENT_XML1 | ENT_COMPAT, 'UTF-8'));
         }
         if ($this->postalCode) {
-            $parentNode->addChild('PostalCode', $this->postalCode);
+            $parentNode->addChild('PostalCode', htmlspecialchars($this->postalCode, ENT_XML1 | ENT_COMPAT, 'UTF-8'));
         }
     }
 }

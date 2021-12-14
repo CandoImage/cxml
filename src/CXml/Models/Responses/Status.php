@@ -5,17 +5,17 @@ namespace CXml\Models\Responses;
 class Status implements ResponseInterface
 {
     /**
-     * @var int 
+     * @var int
      */
     private $statusCode;
 
     /**
-     * @var string 
+     * @var string
      */
     private $statusText;
 
     /**
-     * @var string 
+     * @var string
      */
     private $statusValue;
 
@@ -68,11 +68,11 @@ class Status implements ResponseInterface
     }
 
     /**
-     * @noinspection PhpUndefinedFieldInspection 
+     * @noinspection PhpUndefinedFieldInspection
      */
     public function render(\SimpleXMLElement $parentNode): void
     {
-        $node = $parentNode->addChild('Status', $this->statusValue);
+        $node = $parentNode->addChild('Status', htmlspecialchars($this->statusValue, ENT_XML1 | ENT_COMPAT, 'UTF-8'));
 
         $node->addAttribute('code', $this->statusCode);
         $node->addAttribute('text', $this->statusText);

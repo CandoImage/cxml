@@ -5,38 +5,38 @@ namespace CXml\Models\Messages;
 class Money implements MessageInterface
 {
     /**
-     * @var float 
+     * @var float
      */
     private $amount;
 
     /**
-     * @var string  
+     * @var string
      */
     private $currency;
 
     /**
-     * @var float 
+     * @var float
      */
     private $alternateAmount;
 
     /**
-     * @var string  
+     * @var string
      */
     private $alternateCurrency;
 
     public function render(\SimpleXMLElement $parentNode): void
     {
         $amount = number_format($this->amount, 2, '.', '');
-        $node = $parentNode->addChild('Money', $amount);
+        $node = $parentNode->addChild('Money', htmlspecialchars($amount, ENT_XML1 | ENT_COMPAT, 'UTF-8'));
 
-        $node->addAttribute('currency', $this->currency);
+        $node->addAttribute('currency', htmlspecialchars($this->currency, ENT_XML1 | ENT_COMPAT, 'UTF-8'));
 
         if ($this->alternateAmount !== null) {
             $alternateAmount = number_format($this->alternateAmount, 2, '.', '');
-            $node->addChild('alternateAmount', $alternateAmount);
+            $node->addChild('alternateAmount', htmlspecialchars($alternateAmount, ENT_XML1 | ENT_COMPAT, 'UTF-8'));
         }
         if ($this->alternateCurrency !== null) {
-            $node->addChild('alternateCurrency', $this->alternateCurrency);
+            $node->addChild('alternateCurrency', htmlspecialchars($this->alternateCurrency, ENT_XML1 | ENT_COMPAT, 'UTF-8'));
         }
     }
 

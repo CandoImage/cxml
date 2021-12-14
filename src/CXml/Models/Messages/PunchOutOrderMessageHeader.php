@@ -7,27 +7,27 @@ namespace CXml\Models\Messages;
 class PunchOutOrderMessageHeader
 {
     /**
-     * @var float 
+     * @var float
      */
     private $totalAmount;
 
     /**
-     * @var float|null 
+     * @var float|null
      */
     private $shippingCost;
 
     /**
-     * @var string 
+     * @var string
      */
     private $shippingDescription;
 
     /**
-     * @var float 
+     * @var float
      */
     private $taxSum;
 
     /**
-     * @var string 
+     * @var string
      */
     private $taxDescription;
 
@@ -115,7 +115,7 @@ class PunchOutOrderMessageHeader
         $money->render($node);
 
         if ($description !== null) {
-            $node->addChild('Description', $description)
+            $node->addChild('Description', htmlspecialchars($description, ENT_XML1 | ENT_COMPAT, 'UTF-8'))
                 ->addAttribute('xml:xml:lang', $locale);
         }
     }

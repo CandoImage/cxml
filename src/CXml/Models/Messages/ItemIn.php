@@ -2,6 +2,7 @@
 
 namespace CXml\Models\Messages;
 
+
 class ItemIn implements MessageInterface
 {
     /**
@@ -201,15 +202,15 @@ class ItemIn implements MessageInterface
     public function render(\SimpleXMLElement $parentNode): void
     {
         $node = $parentNode->addChild('ItemIn');
-        $node->addAttribute('quantity', $this->quantity);
+        $node->addAttribute('quantity', htmlspecialchars($this->quantity, ENT_XML1 | ENT_COMPAT, 'UTF-8'));
         $locale = $this->getLocale();
 
         // ItemID
         $itemIdNode = $node->addChild('ItemID');
-        $itemIdNode->addChild('SupplierPartID', $this->supplierPartId);
+        $itemIdNode->addChild('SupplierPartID', htmlspecialchars($this->supplierPartId, ENT_XML1 | ENT_COMPAT, 'UTF-8'));
 
         if ($this->supplierPartAuxiliaryID) {
-            $itemIdNode->addChild('SupplierPartAuxiliaryID', $this->supplierPartAuxiliaryID);
+            $itemIdNode->addChild('SupplierPartAuxiliaryID', htmlspecialchars($this->supplierPartAuxiliaryID, ENT_XML1 | ENT_COMPAT, 'UTF-8'));
         }
 
         // ItemDetails
@@ -222,25 +223,25 @@ class ItemIn implements MessageInterface
         $unitPrice->render($itemDetailsNode->addChild('UnitPrice'));
 
         // Description
-        $description = $itemDetailsNode->addChild('Description', $this->description);
+        $description = $itemDetailsNode->addChild('Description', htmlspecialchars($this->description, ENT_XML1 | ENT_COMPAT, 'UTF-8'));
         if ($locale) {
             $description->addAttribute('xml:xml:lang', $locale);
         }
 
         // UnitOfMeasure
-        $itemDetailsNode->addChild('UnitOfMeasure', $this->unitOfMeasure);
+        $itemDetailsNode->addChild('UnitOfMeasure', htmlspecialchars($this->unitOfMeasure, ENT_XML1 | ENT_COMPAT, 'UTF-8'));
 
         // Classification
-        $itemDetailsNode->addChild('Classification', $this->classification)
-            ->addAttribute('domain', $this->classificationDomain);
+        $itemDetailsNode->addChild('Classification', htmlspecialchars($this->classification, ENT_XML1 | ENT_COMPAT, 'UTF-8'))
+            ->addAttribute('domain', htmlspecialchars($this->classificationDomain, ENT_XML1 | ENT_QUOTES, 'UTF-8'));
 
         // Manufacturer
-        $itemDetailsNode->addChild('ManufacturerPartID', $this->manufacturerPartId);
-        $itemDetailsNode->addChild('ManufacturerName', $this->manufacturerName);
+        $itemDetailsNode->addChild('ManufacturerPartID', htmlspecialchars($this->manufacturerPartId, ENT_XML1 | ENT_COMPAT, 'UTF-8'));
+        $itemDetailsNode->addChild('ManufacturerName', htmlspecialchars($this->manufacturerName, ENT_XML1 | ENT_COMPAT, 'UTF-8'));
 
         // LeadTime
         if ($this->leadTime !== null) {
-            $itemDetailsNode->addChild('LeadTime', $this->leadTime);
+            $itemDetailsNode->addChild('LeadTime', htmlspecialchars($this->leadTime, ENT_XML1 | ENT_COMPAT, 'UTF-8'));
         }
     }
 

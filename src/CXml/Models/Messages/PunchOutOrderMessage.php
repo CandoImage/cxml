@@ -93,7 +93,7 @@ class PunchOutOrderMessage implements MessageInterface
     public function render(\SimpleXMLElement $parentNode): void
     {
         $node = $parentNode->addChild('PunchOutOrderMessage');
-        $node->addChild('BuyerCookie', $this->buyerCookie);
+        $node->addChild('BuyerCookie', htmlspecialchars($this->buyerCookie, ENT_XML1 | ENT_COMPAT, 'UTF-8'));
 
         if ($this->header) {
             $this->header->render($node, $this->currency, $this->locale);

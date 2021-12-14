@@ -92,30 +92,30 @@ class Credential implements RequestInterface, MessageInterface
     public function render(\SimpleXMLElement $parentNode) : void
     {
         $credential = $parentNode->addChild('Credential');
-        $credential->addAttribute('domain', $this->domain);
+        $credential->addAttribute('domain', htmlspecialchars($this->domain, ENT_XML1 | ENT_COMPAT, 'UTF-8'));
         if (!empty($this->type)) {
-            $credential->addAttribute('type', $this->type);
+            $credential->addAttribute('type', htmlspecialchars($this->type, ENT_XML1 | ENT_COMPAT, 'UTF-8'));
         }
-        $credential->addChild('Identity', $this->identity);
+        $credential->addChild('Identity', htmlspecialchars($this->identity, ENT_XML1 | ENT_COMPAT, 'UTF-8'));
 
         if (!empty($this->sharedSecret)) {
-            $credential->addChild('SharedSecret', $this->sharedSecret);
+            $credential->addChild('SharedSecret', htmlspecialchars($this->sharedSecret, ENT_XML1 | ENT_COMPAT, 'UTF-8'));
         }
 
         if (!empty($this->credentialMac)) {
-            $credentialMac = $credential->addChild('CredentialMac', $this->credentialMac);
+            $credentialMac = $credential->addChild('CredentialMac', htmlspecialchars($this->credentialMac, ENT_XML1 | ENT_COMPAT, 'UTF-8'));
 
             if (!empty($this->credentialMacType)) {
-                $credentialMac->addAttribute('type', $this->credentialMacType);
+                $credentialMac->addAttribute('type', htmlspecialchars($this->credentialMacType, ENT_XML1 | ENT_COMPAT, 'UTF-8'));
             }
             if (!empty($this->credentialMacAlgorithm)) {
-                $credentialMac->addAttribute('algorithm', $this->credentialMacAlgorithm);
+                $credentialMac->addAttribute('algorithm', htmlspecialchars($this->credentialMacAlgorithm, ENT_XML1 | ENT_COMPAT, 'UTF-8'));
             }
             if (!empty($this->credentialMacCreationDate)) {
-                $credentialMac->addAttribute('creationDate', $this->credentialMacCreationDate);
+                $credentialMac->addAttribute('creationDate', htmlspecialchars($this->credentialMacCreationDate, ENT_XML1 | ENT_COMPAT, 'UTF-8'));
             }
             if (!empty($this->credentialMacExpirationDate)) {
-                $credentialMac->addAttribute('expirationDate', $this->credentialMacExpirationDate);
+                $credentialMac->addAttribute('expirationDate', htmlspecialchars($this->credentialMacExpirationDate, ENT_XML1 | ENT_COMPAT, 'UTF-8'));
             }
         }
     }

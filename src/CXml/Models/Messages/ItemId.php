@@ -75,13 +75,13 @@ class ItemId implements RequestInterface, MessageInterface
     {
         $node = $parentNode->addChild('ItemID');
         $locale = $this->getLocale();
-        $node->addChild('SupplierPartID', $this->supplierPartId);
+        $node->addChild('SupplierPartID', htmlspecialchars($this->supplierPartId, ENT_XML1 | ENT_COMPAT, 'UTF-8'));
 
         if ($this->supplierPartAuxiliaryID) {
-            $node->addChild('SupplierPartAuxiliaryID', $this->supplierPartAuxiliaryID);
+            $node->addChild('SupplierPartAuxiliaryID', htmlspecialchars($this->supplierPartAuxiliaryID, ENT_XML1 | ENT_COMPAT, 'UTF-8'));
         }
         if ($this->buyerPartID) {
-            $node->addChild('BuyerPartID', $this->buyerPartID);
+            $node->addChild('BuyerPartID', htmlspecialchars($this->buyerPartID, ENT_XML1 | ENT_COMPAT, 'UTF-8'));
         }
     }
 
