@@ -31,9 +31,27 @@ class ItemIn implements MessageInterface
     private $unitPriceCurrency;
 
     /**
-     * @var string Product name
+     * @var string Description | Product Name
+     *
+     * If shortName is set will generated something like this - othweise it is
+     * the main value.
+     * <Description xml:lang="en-US">
+     *   <ShortName>Mens Shoes</ShortName>
+     *   Black shoes with velcro clasp
+     * </Description>
      */
     private $description;
+
+    /**
+     * @var string Dedicated Product name to set in description.
+     *
+     * Will generate something like this:
+     * <Description xml:lang="en-US">
+     *   <ShortName>Mens Shoes</ShortName>
+     *   Black shoes with velcro clasp
+     * </Description>
+     */
+    private $shortName;
 
     /**
      * @var string Locale of description
@@ -138,9 +156,26 @@ class ItemIn implements MessageInterface
         return $this->description;
     }
 
-    public function setDescription(string $description): self
+    public function setDescription(string $description, string $longDescription = null): self
     {
-        $this->description = $description;
+        if (!empty($longDescription)) {
+            $this->description = $longDescription;
+            $this->setShortName($description);
+        } else {
+            $this->description = $description;
+            unset($this->shortName);
+        }
+        return $this;
+    }
+
+    public function getShortName(): string
+    {
+        return $this->shortName;
+    }
+
+    public function setShortName(string $shortName): self
+    {
+        $this->shortName = $shortName;
         return $this;
     }
 
@@ -223,7 +258,11 @@ class ItemIn implements MessageInterface
         $unitPrice->render($itemDetailsNode->addChild('UnitPrice'));
 
         // Description
-        $description = $itemDetailsNode->addChild('Description', htmlspecialchars($this->description, ENT_XML1 | ENT_COMPAT, 'UTF-8'));
+        $descriptionValue = htmlspecialchars($this->description, ENT_XML1 | ENT_COMPAT, 'UTF-8');
+        if (!empty($this->shortName)) {
+            $descriptionValue = '<ShortName>' . htmlspecialchars($this->shortName, ENT_XML1 | ENT_COMPAT, 'UTF-8') . '</ShortName>' . $descriptionValue;
+        }
+        $description = $itemDetailsNode->addChild('Description', $descriptionValue);
         if ($locale) {
             $description->addAttribute('xml:xml:lang', $locale);
         }
