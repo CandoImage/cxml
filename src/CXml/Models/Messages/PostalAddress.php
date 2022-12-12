@@ -22,6 +22,8 @@ class PostalAddress implements RequestInterface, MessageInterface
      * Optional Properties
      */
 
+    private $isoCountryCode;
+
     /**
      * @var string[]
      */
@@ -36,6 +38,11 @@ class PostalAddress implements RequestInterface, MessageInterface
     public function getCountry()
     {
         return $this->country;
+    }
+
+    public function getISOCountryCode()
+    {
+        return $this->isoCountryCode;
     }
 
     /**
@@ -163,37 +170,45 @@ class PostalAddress implements RequestInterface, MessageInterface
         return $this;
     }
 
-    public function parse(\SimpleXMLElement $contactXml) : void
+    public function parse(\SimpleXMLElement $contactXml): void
     {
         if ($data = $contactXml->xpath('Country')) {
-            $this->country = (string) current($data);
+            $current = current($data);
+
+            $attr = $current->attributes();
+
+            if ($attr && isset($attr->isoCountryCode)) {
+                $this->isoCountryCode = $attr->isoCountryCode;
+            }
+
+            $this->country = (string)$current;
         }
         if ($data = $contactXml->xpath('City')) {
-            $this->city = (string) current($data);
+            $this->city = (string)current($data);
         }
         if ($data = $contactXml->xpath('Street')) {
             foreach ($data as $street) {
-                $this->street[] = (string) $street;
+                $this->street[] = (string)$street;
             }
         }
 
         if ($data = $contactXml->xpath('DeliverTo')) {
             foreach ($data as $deliverTo) {
-                $this->deliverTo[] = (string) $deliverTo;
+                $this->deliverTo[] = (string)$deliverTo;
             }
         }
         if ($data = $contactXml->xpath('Municipality')) {
-            $this->municipality = (string) current($data);
+            $this->municipality = (string)current($data);
         }
         if ($data = $contactXml->xpath('State')) {
-            $this->state = (string) current($data);
+            $this->state = (string)current($data);
         }
         if ($data = $contactXml->xpath('PostalCode')) {
-            $this->postalCode = (string) current($data);
+            $this->postalCode = (string)current($data);
         }
     }
 
-    public function render(\SimpleXMLElement $parentNode) : void
+    public function render(\SimpleXMLElement $parentNode): void
     {
         if ($this->country) {
             $parentNode->addChild('Country', htmlspecialchars($this->country, ENT_XML1 | ENT_COMPAT, 'UTF-8'));
