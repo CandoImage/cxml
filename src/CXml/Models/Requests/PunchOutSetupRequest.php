@@ -5,6 +5,7 @@ namespace CXml\Models\Requests;
 use CXml\Models\Messages\Contact;
 use CXml\Models\EntrinsicTrait;
 use CXml\Models\Messages\SelectedItem;
+use CXml\Models\Messages\ShipTo;
 
 class PunchOutSetupRequest implements RequestInterface
 {
@@ -31,6 +32,11 @@ class PunchOutSetupRequest implements RequestInterface
     private $contact = [];
 
     /**
+     * @var \CXml\Models\Messages\ShipTo[]
+     */
+    private $shipTo = [];
+
+    /**
      * @var \CXml\Models\Messages\SelectedItem|null
      */
     protected $selectedItem;
@@ -54,6 +60,12 @@ class PunchOutSetupRequest implements RequestInterface
             $contact = new Contact();
             $contact->parse($contactElement);
             $this->contact[] = $contact;
+        }
+
+        foreach ($requestNode->xpath('ShipTo/Address') as $shipToElement) {
+            $shipTo = new ShipTo();
+            $shipTo->parse($shipToElement);
+            $this->shipTo[] = $shipTo;
         }
     }
 
@@ -96,6 +108,14 @@ class PunchOutSetupRequest implements RequestInterface
     public function getContact(): array
     {
         return $this->contact;
+    }
+
+    /**
+     * @return \CXml\Models\Messages\ShipTo[]
+     */
+    public function getShipTo(): array
+    {
+        return $this->shipTo;
     }
 
     /**
