@@ -20,7 +20,7 @@ class ShipTo implements RequestInterface
     /**
      * @var \CXml\Models\Messages\PostalAddress
      */
-    private $address;
+    private $postalAddress;
 
     protected $isoCountryCode;
     protected $addressId;
@@ -42,8 +42,8 @@ class ShipTo implements RequestInterface
         $this->name = $billToXml->xpath('Name')[0];
 
         if ($postalAddressElement = current($billToXml->xpath('PostalAddress'))) {
-            $this->address = new PostalAddress();
-            $this->address->parse($postalAddressElement);
+            $this->postalAddress = new PostalAddress();
+            $this->postalAddress->parse($postalAddressElement);
         }
     }
 
