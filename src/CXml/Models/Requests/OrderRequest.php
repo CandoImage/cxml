@@ -16,6 +16,7 @@ class OrderRequest implements RequestInterface
 
     protected $orderID;
     protected $orderDate;
+    protected $orderVersion;
 
     /**
      * Type of order:
@@ -37,17 +38,22 @@ class OrderRequest implements RequestInterface
     protected $type;
 
     /**
-     * @var float|null 
+     * @var float|null
      */
     protected $total;
 
     /**
-     * @var string|null 
+     * @var string|null
+     */
+    protected $currency;
+
+    /**
+     * @var ShipTo|null
      */
     protected $shipTo;
 
     /**
-     * @var BillTo 
+     * @var BillTo|null
      */
     protected $billTo;
 
@@ -55,27 +61,34 @@ class OrderRequest implements RequestInterface
     protected $tax;
 
     /**
-     * @var \CXml\Models\Messages\Contact 
+     * @var \CXml\Models\Messages\Contact
      */
     protected $contact;
 
     /**
-     * @var \CXml\Models\Messages\ItemOut[] 
+     * @var \CXml\Models\Messages\ItemOut[]
      */
     protected $itemOut = [];
 
     /**
-     * @noinspection PhpUndefinedFieldInspection 
+     * @noinspection PhpUndefinedFieldInspection
      */
     public function parse(\SimpleXMLElement $requestNode): void
     {
 
         $this->parseAttributes(
-            $requestNode, [
+            current($requestNode->xpath('OrderRequestHeader')), [
             'orderID',
             'orderDate',
             'orderType',
+            'orderVersion',
             'type',
+            ]
+        );
+
+        $this->parseAttributes(
+            current($requestNode->xpath('OrderRequestHeader/Total/Money')), [
+            'currency',
             ]
         );
 
@@ -99,9 +112,10 @@ class OrderRequest implements RequestInterface
             $this->shipTo = new ShipTo();
             $this->shipTo->parse($node);
         }
-        $this->total = (string) current($requestNode->xpath('OrderRequestHeader/Total'));
-        $this->shipping = (string) current($requestNode->xpath('OrderRequestHeader/Shipping'));
-        $this->tax = (string) current($requestNode->xpath('OrderRequestHeader/Tax'));
+        $totalMoney          = $requestNode->xpath('OrderRequestHeader/Total/Money');
+        $this->total = (string) current($totalMoney);
+        $this->shipping = (string) current($requestNode->xpath('OrderRequestHeader/Shipping/Money'));
+        $this->tax      = (string) current($requestNode->xpath('OrderRequestHeader/Tax/Money'));
     }
 
     /**
@@ -109,7 +123,7 @@ class OrderRequest implements RequestInterface
      */
     public function getOrderId()
     {
-        return $this->orderId;
+        return $this->orderID;
     }
 
     /**
@@ -119,7 +133,7 @@ class OrderRequest implements RequestInterface
      */
     public function setOrderId($orderId)
     {
-        $this->orderId = $orderId;
+        $this->orderID = $orderId;
         return $this;
     }
 
@@ -200,38 +214,38 @@ class OrderRequest implements RequestInterface
     }
 
     /**
-     * @return string|null
+     * @return ShipTo|null
      */
-    public function getShipTo(): ?string
+    public function getShipTo(): ?ShipTo
     {
         return $this->shipTo;
     }
 
     /**
-     * @param string|null $shipTo
+     * @param ShipTo|null $shipTo
      *
      * @return OrderRequest
      */
-    public function setShipTo(?string $shipTo): OrderRequest
+    public function setShipTo(?ShipTo $shipTo): OrderRequest
     {
         $this->shipTo = $shipTo;
         return $this;
     }
 
     /**
-     * @return string|null
+     * @return BillTo|null
      */
-    public function getBillTo(): ?string
+    public function getBillTo(): ?BillTo
     {
         return $this->billTo;
     }
 
     /**
-     * @param string|null $billTo
+     * @param BillTo|null $billTo
      *
      * @return OrderRequest
      */
-    public function setBillTo(?string $billTo): OrderRequest
+    public function setBillTo(?BillTo $billTo): OrderRequest
     {
         $this->billTo = $billTo;
         return $this;
@@ -577,6 +591,38 @@ class OrderRequest implements RequestInterface
     {
         $this->itemOut = $itemOut;
         return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getOrderVersion()
+    {
+        return $this->orderVersion;
+    }
+
+    /**
+     * @param mixed $orderVersion
+     */
+    public function setOrderVersion($orderVersion): void
+    {
+        $this->orderVersion = $orderVersion;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getCurrency(): ?string
+    {
+        return $this->currency;
+    }
+
+    /**
+     * @param string|null $currency
+     */
+    public function setCurrency(?string $currency): void
+    {
+        $this->currency = $currency;
     }
 
 }

@@ -38,9 +38,19 @@ class BillTo implements RequestInterface
             $this->addressIdDomain = $data;
         }
 
-        $this->name = $billToXml->xpath('Name')[0];
+        $this->name = (string) $billToXml->xpath('Name')[0];
 
-        if ($postalAddressElement = current($billToXml->xpath('PostalAddress'))) {
+        if (strlen($this->name) === 0) {
+            $this->name = (string) $billToXml->xpath('Address/Name')[0];
+        }
+
+        $postalAddressElement = current($billToXml->xpath('PostalAddress'));
+
+        if (!$postalAddressElement) {
+            $postalAddressElement = current($billToXml->xpath('Address/PostalAddress'));
+        }
+
+        if ($postalAddressElement) {
             $this->postalAddress = new PostalAddress();
             $this->postalAddress->parse($postalAddressElement);
         }

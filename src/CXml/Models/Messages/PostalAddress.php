@@ -178,7 +178,7 @@ class PostalAddress implements RequestInterface, MessageInterface
             $attr = $current->attributes();
 
             if ($attr && isset($attr->isoCountryCode)) {
-                $this->isoCountryCode = $attr->isoCountryCode;
+                $this->isoCountryCode = (string)$attr->isoCountryCode;
             }
 
             $this->country = (string)$current;

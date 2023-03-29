@@ -26,22 +26,32 @@ class ShipTo implements RequestInterface
     protected $addressId;
     protected $addressIdDomain;
 
-    public function parse(\SimpleXMLElement $billToXml) : void
+    public function parse(\SimpleXMLElement $billToXml): void
     {
 
-        if ($data = (string) $billToXml->attributes()->isoCountryCode) {
+        if ($data = (string)$billToXml->attributes()->isoCountryCode) {
             $this->isoCountryCode = $data;
         }
-        if ($data = (string) $billToXml->attributes()->addressID) {
+        if ($data = (string)$billToXml->attributes()->addressID) {
             $this->addressId = $data;
         }
-        if ($data = (string) $billToXml->attributes()->addressIDDomain) {
+        if ($data = (string)$billToXml->attributes()->addressIDDomain) {
             $this->addressIdDomain = $data;
         }
 
-        $this->name = $billToXml->xpath('Name')[0];
+        $this->name = (string)$billToXml->xpath('Name')[0];
 
-        if ($postalAddressElement = current($billToXml->xpath('PostalAddress'))) {
+        if (strlen($this->name) === 0) {
+            $this->name = (string)$billToXml->xpath('Address/Name')[0];
+        }
+
+        $postalAddressElement = current($billToXml->xpath('PostalAddress'));
+
+        if (!$postalAddressElement) {
+            $postalAddressElement = current($billToXml->xpath('Address/PostalAddress'));
+        }
+
+        if ($postalAddressElement) {
             $this->postalAddress = new PostalAddress();
             $this->postalAddress->parse($postalAddressElement);
         }
