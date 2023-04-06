@@ -76,8 +76,10 @@ class OrderRequest implements RequestInterface
     public function parse(\SimpleXMLElement $requestNode): void
     {
 
+        $requestHeader = current($requestNode->xpath('OrderRequestHeader'));
+
         $this->parseAttributes(
-            current($requestNode->xpath('OrderRequestHeader')), [
+            $requestHeader, [
             'orderID',
             'orderDate',
             'orderType',
@@ -93,6 +95,7 @@ class OrderRequest implements RequestInterface
         );
 
         $this->parseEntrinsic($requestNode);
+        $this->parseEntrinsic($requestHeader);
 
         foreach ($requestNode->xpath('ItemOut') as $itemOutElement) {
             $itemOut = new ItemOut();

@@ -39,7 +39,11 @@ class ShipTo implements RequestInterface
             $this->addressIdDomain = $data;
         }
 
-        $this->name = (string)$billToXml->xpath('Name')[0];
+        $name = $billToXml->xpath('Name');
+
+        if ($name) {
+            $this->name = (string)$name[0];
+        }
 
         if (strlen($this->name) === 0) {
             $this->name = (string)$billToXml->xpath('Address/Name')[0];
