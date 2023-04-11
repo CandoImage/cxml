@@ -69,6 +69,7 @@ class OrderRequest implements RequestInterface
      * @var \CXml\Models\Messages\ItemOut[]
      */
     protected $itemOut = [];
+    protected $comments;
 
     /**
      * @noinspection PhpUndefinedFieldInspection
@@ -119,6 +120,7 @@ class OrderRequest implements RequestInterface
         $this->total = (string) current($totalMoney);
         $this->shipping = (string) current($requestNode->xpath('OrderRequestHeader/Shipping/Money'));
         $this->tax      = (string) current($requestNode->xpath('OrderRequestHeader/Tax/Money'));
+        $this->comments = (string) current($requestNode->xpath('OrderRequestHeader/Comments'));
     }
 
     /**

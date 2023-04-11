@@ -66,6 +66,7 @@ class ItemOut implements RequestInterface
     protected $unitPrice;
     protected $unitPriceCurrency;
     protected $comments;
+    protected $description;
 
     public function parse(\SimpleXMLElement $requestNode): void
     {
@@ -130,6 +131,9 @@ class ItemOut implements RequestInterface
         }
         if ($node = current($requestNode->xpath('Comments'))) {
             $this->comments = (string)$node;
+        }
+        if ($node = current($requestNode->xpath('ItemDetail/Description'))) {
+            $this->description = (string)$node;
         }
     }
 
@@ -808,6 +812,22 @@ class ItemOut implements RequestInterface
     public function setComments($comments): void
     {
         $this->comments = $comments;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    /**
+     * @param mixed $description
+     */
+    public function setDescription($description): void
+    {
+        $this->description = $description;
     }
 
 }
