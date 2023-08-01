@@ -142,10 +142,18 @@ class Header implements RequestInterface, MessageInterface
         return $this;
     }
 
-    public function parse(\SimpleXMLElement $headerXml, $validate = false) : void
+    public function parse(\SimpleXMLElement $headerXml, $validate = false): void
     {
-        $this->senderIdentity = (string)$headerXml->xpath('Sender/Credential/Identity')[0];
-        $this->senderSharedSecret = (string)$headerXml->xpath('Sender/Credential/SharedSecret')[0];
+        $identity     = $headerXml->xpath('Sender/Credential/Identity');
+        $sharedSecret = $headerXml->xpath('Sender/Credential/SharedSecret');
+
+        if ($identity) {
+            $this->senderIdentity = (string)$identity[0];
+        }
+
+        if ($sharedSecret) {
+            $this->senderSharedSecret = (string)$sharedSecret[0];
+        }
 
 
         // cXml Spec as of January 2021
@@ -160,7 +168,7 @@ class Header implements RequestInterface, MessageInterface
         // sends payload that violates this....
         if ($fromCredentials = $headerXml->xpath('From/Credential')) {
             $this->fromIdentity = (string)$fromCredentials[0]->xpath('Identity')[0];
-            $this->fromDomain = (string)$fromCredentials[0]->attributes()->domain;
+            $this->fromDomain   = (string)$fromCredentials[0]->attributes()->domain;
 
             $domainValidation = [];
             foreach ($fromCredentials as $fromCredential) {
@@ -198,7 +206,7 @@ class Header implements RequestInterface, MessageInterface
         }
     }
 
-    public function render(\SimpleXMLElement $parentNode) : void
+    public function render(\SimpleXMLElement $parentNode): void
     {
         $headerNode = $parentNode->addChild('Header');
 
@@ -207,8 +215,7 @@ class Header implements RequestInterface, MessageInterface
             foreach ($this->fromCredentials as $fromCredential) {
                 $fromCredential->render($fromNode);
             }
-        }
-        else {
+        } else {
             $this->addNode($headerNode, 'From', htmlspecialchars($this->fromIdentity ?? 'Unknown', ENT_XML1 | ENT_COMPAT, 'UTF-8'));
         }
 
@@ -217,8 +224,7 @@ class Header implements RequestInterface, MessageInterface
             foreach ($this->toCredentials as $toCredential) {
                 $toCredential->render($toNode);
             }
-        }
-        else {
+        } else {
             $this->addNode($headerNode, 'To', 'Unknown');
         }
 
@@ -227,14 +233,13 @@ class Header implements RequestInterface, MessageInterface
             foreach ($this->senderCredentials as $senderCredential) {
                 $senderCredential->render($senderNode);
             }
-        }
-        else {
+        } else {
             $this->addNode($headerNode, 'Sender', $this->getSenderIdentity() ?? 'Unknown')
                 ->addChild('UserAgent', 'Unknown');
         }
     }
 
-    private function addNode(\SimpleXMLElement $parentNode, string $nodeName, string $identity) : \SimpleXMLElement
+    private function addNode(\SimpleXMLElement $parentNode, string $nodeName, string $identity): \SimpleXMLElement
     {
         $node = $parentNode->addChild($nodeName);
 
