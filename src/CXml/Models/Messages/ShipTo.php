@@ -45,7 +45,7 @@ class ShipTo implements RequestInterface
             $this->name = (string)$name[0];
         }
 
-        if (strlen($this->name) === 0) {
+        if (strlen($this->name) === 0 && $billToXml->xpath('Address/Name')) {
             $this->name = (string)$billToXml->xpath('Address/Name')[0];
         }
 
@@ -83,7 +83,7 @@ class ShipTo implements RequestInterface
     /**
      * @return \CXml\Models\Messages\PostalAddress
      */
-    public function getPostalAddress(): PostalAddress
+    public function getPostalAddress(): ?PostalAddress
     {
         return $this->postalAddress;
     }
