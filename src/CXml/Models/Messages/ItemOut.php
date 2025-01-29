@@ -63,6 +63,10 @@ class ItemOut implements RequestInterface
      * @var \CXml\Models\Messages\Contact
      */
     protected $contact;
+    protected $unitPrice;
+    protected $unitPriceCurrency;
+    protected $comments;
+    protected $description;
 
     public function parse(\SimpleXMLElement $requestNode): void
     {
@@ -106,16 +110,30 @@ class ItemOut implements RequestInterface
         }
 
         if ($node = current($requestNode->xpath('ItemID/SupplierPartID'))) {
-            $this->itemIdSupplierPartID = (string) $node;
+            $this->itemIdSupplierPartID = (string)$node;
         }
         if ($node = current($requestNode->xpath('ItemID/SupplierPartAuxiliaryID'))) {
-            $this->itemIdSupplierPartAuxiliaryID = (string) $node;
+            $this->itemIdSupplierPartAuxiliaryID = (string)$node;
         }
         if ($node = current($requestNode->xpath('ItemID/BuyerPartID'))) {
-            $this->itemIdBuyerPartID = (string) $node;
+            $this->itemIdBuyerPartID = (string)$node;
         }
         if ($node = current($requestNode->xpath('ItemID/IdReference'))) {
-            $this->itemIdIdReference = (string) $node;
+            $this->itemIdIdReference = (string)$node;
+        }
+        if ($node = current($requestNode->xpath('ItemDetail/UnitPrice/Money'))) {
+            $this->unitPrice = (string)$node;
+            $attrs           = $node->attributes();
+
+            if (isset($attrs['currency'])) {
+                $this->unitPriceCurrency = (string)$attrs['currency'];
+            }
+        }
+        if ($node = current($requestNode->xpath('Comments'))) {
+            $this->comments = (string)$node;
+        }
+        if ($node = current($requestNode->xpath('ItemDetail/Description'))) {
+            $this->description = (string)$node;
         }
     }
 
@@ -191,7 +209,8 @@ class ItemOut implements RequestInterface
      */
     public function setItemIdSupplierPartAuxiliaryID(
         $itemIdSupplierPartAuxiliaryID
-    ): self {
+    ): self
+    {
         $this->itemIdSupplierPartAuxiliaryID = $itemIdSupplierPartAuxiliaryID;
         return $this;
     }
@@ -745,6 +764,70 @@ class ItemOut implements RequestInterface
     {
         $this->contact = $contact;
         return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUnitPrice()
+    {
+        return $this->unitPrice;
+    }
+
+    /**
+     * @param mixed $unitPrice
+     */
+    public function setUnitPrice($unitPrice): void
+    {
+        $this->unitPrice = $unitPrice;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUnitPriceCurrency()
+    {
+        return $this->unitPriceCurrency;
+    }
+
+    /**
+     * @param mixed $unitPriceCurrency
+     */
+    public function setUnitPriceCurrency($unitPriceCurrency): void
+    {
+        $this->unitPriceCurrency = $unitPriceCurrency;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getComments()
+    {
+        return $this->comments;
+    }
+
+    /**
+     * @param mixed $comments
+     */
+    public function setComments($comments): void
+    {
+        $this->comments = $comments;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    /**
+     * @param mixed $description
+     */
+    public function setDescription($description): void
+    {
+        $this->description = $description;
     }
 
 }
